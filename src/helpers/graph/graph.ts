@@ -50,36 +50,40 @@ export class Node {
 
 // create a graph class. graph has nodes and edges.
 export class Graph {
-  private nodes: Node[] = [];
+  private _nodes: Node[] = [];
 
   // add a node to the graph
   public addNode(node: Node) {
-    this.nodes.push(node);
+    this._nodes.push(node);
   }
 
   // connect two nodes with a weight
   public connect(node1: Node, node2: Node, weight: number) {
-    const node1Index = this.nodes.findIndex((node) => node.name === node1.name);
-    const node2Index = this.nodes.findIndex((node) => node.name === node2.name);
-    this.nodes[node1Index].connect(this.nodes[node2Index], weight);
+    const node1Index = this._nodes.findIndex(
+      (node) => node.name === node1.name
+    );
+    const node2Index = this._nodes.findIndex(
+      (node) => node.name === node2.name
+    );
+    this._nodes[node1Index].connect(this._nodes[node2Index], weight);
   }
 
   // get all the nodes in the graph
   public getNodes() {
-    return this.nodes;
+    return this._nodes;
   }
 
   public containsNode(node: Node) {
-    return this.nodes.findIndex((n) => n.name === node.name) !== -1;
+    return this._nodes.findIndex((n) => n.name === node.name) !== -1;
   }
 
   public findNode(name: string) {
-    return this.nodes.find((node) => node.name === name);
+    return this._nodes.find((node) => node.name === name);
   }
 
   public optimize() {
     // remove duplicate edges
-    this.nodes.forEach((node) => {
+    this._nodes.forEach((node) => {
       node.edges.forEach((edge, index) => {
         node.edges.forEach((edge2, index2) => {
           if (
@@ -92,6 +96,10 @@ export class Graph {
         });
       });
     });
+  }
+
+  get nodes() {
+    return this._nodes;
   }
 }
 
