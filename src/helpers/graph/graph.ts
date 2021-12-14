@@ -18,6 +18,10 @@ export class Node {
     this._edges.push(new Edge(this, node, weight));
   }
 
+  public connectedTo(node: Node) {
+    return this._edges.some((edge) => edge.node2 === node);
+  }
+
   // print all edges of a node
   public printEdges() {
     this._edges.forEach((edge) => {
@@ -99,7 +103,7 @@ export class Graph {
     });
   }
 
-  get nodes() {
+  get nodes(): Array<Node> {
     return this._nodes;
   }
 }
