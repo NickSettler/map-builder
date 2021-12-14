@@ -29,6 +29,7 @@ export class Node {
 
   // print edges with nodes recursively with offset
   public printEdgesRecursive(offset: number = 0) {
+    if (offset > 5) return;
     this._edges.forEach((edge) => {
       console.log(
         " ".repeat(offset) +
