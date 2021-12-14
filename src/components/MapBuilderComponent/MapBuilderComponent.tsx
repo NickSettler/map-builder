@@ -95,7 +95,8 @@ const MapBuilderComponent = (): JSX.Element => {
             {mapBuilder &&
               mapBuilder.lines.map((line: Line, index: number) => (
                 <li key={index} onClick={() => mapBuilder.selectShape(line)}>
-                  [{line.X1} {line.Y1}] [{line.X2} {line.Y2}] ({line.id})
+                  [{line.X1} {line.Y1}] [{line.X2} {line.Y2}] ({line.id}) L:{" "}
+                  {line.length}
                 </li>
               ))}
           </ul>
