@@ -1,0 +1,11 @@
+.objects-list {
+  & > li {
+    user-select: none;
+  }
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

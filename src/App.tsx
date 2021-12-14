@@ -1,7 +1,12 @@
 import React from "react";
+import MapBuilderComponent from "./components/MapBuilderComponent";
 
 const App = () => {
-  return <div></div>;
+  return (
+    <div>
+      <MapBuilderComponent />
+    </div>
+  );
 };
 
 export default App;
