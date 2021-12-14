@@ -1,7 +1,6 @@
 import Point from "./point";
 import { LineOptions } from "./types/mapbuilder.types";
 import { selectedColor, unselectedColor } from "./consts";
-import { v4 } from "uuid";
 
 export default class Line {
   private _id: string;
@@ -73,11 +72,11 @@ export default class Line {
   }
 
   get point1() {
-    return new Point({ id: v4(), x: this.x1, y: this.y1 });
+    return new Point({ id: `${this._id}-A`, x: this.x1, y: this.y1 });
   }
 
   get point2() {
-    return new Point({ id: v4(), x: this.x2, y: this.y2 });
+    return new Point({ id: `${this._id}-B`, x: this.x2, y: this.y2 });
   }
 
   get length() {
