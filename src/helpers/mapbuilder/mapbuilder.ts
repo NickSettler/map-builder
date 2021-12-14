@@ -252,6 +252,8 @@ class MapBuilder extends EventEmitter {
 
       this.processIntersections();
     }
+
+    this._lines = this._lines.filter((line: Line) => line.length !== 0);
   }
 
   private update() {
