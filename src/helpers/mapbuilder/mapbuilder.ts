@@ -39,6 +39,7 @@ class MapBuilder extends EventEmitter {
 
   private _points: Point[];
   private _lines: Line[];
+  private _pathGraph: Graph;
 
   private _currentAdd: number = 0;
   private _firstAddPoint: Point;
@@ -56,6 +57,7 @@ class MapBuilder extends EventEmitter {
 
     this._points = [];
     this._lines = [];
+    this._pathGraph = new Graph();
 
     this._firstAddPoint = new Point({
       id: v4(),
@@ -148,18 +150,6 @@ class MapBuilder extends EventEmitter {
     this._lines.push(l3);
 
     this.processIntersections();
-
-    // create graph from lines
-    // const g2 = new Graph();
-    // this._lines.forEach((l: Line) => {
-    //   const n1 = new Node(l.id);
-    //
-    //   if (!g2.containsNode(n1)) {
-    //     g2.addNode(n1);
-    //   } else {
-    //     const n1 = g2.findNode(l.id);
-    //   }
-    // });
   }
 
   public start() {
