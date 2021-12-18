@@ -1,9 +1,10 @@
 import Point from "./point";
 import { LineOptions } from "./types/mapbuilder.types";
 import { selectedColor, unselectedColor } from "./consts";
+import { pointID } from "./pointsHelpers";
 
 export default class Line {
-  private _id: string;
+  private readonly _id: string;
   private x1: number;
   private y1: number;
   private x2: number;
@@ -72,11 +73,11 @@ export default class Line {
   }
 
   get point1() {
-    return new Point({ id: `${this._id}-A`, x: this.x1, y: this.y1 });
+    return new Point({ id: pointID(this.x1, this.y1), x: this.x1, y: this.y1 });
   }
 
   get point2() {
-    return new Point({ id: `${this._id}-B`, x: this.x2, y: this.y2 });
+    return new Point({ id: pointID(this.x2, this.y2), x: this.x2, y: this.y2 });
   }
 
   get length() {
