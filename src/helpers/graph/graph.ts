@@ -1,4 +1,7 @@
 // create edge class with weight. edge connects two nodes.
+import Point from "../mapbuilder/point";
+import { pointID } from "../mapbuilder/pointsHelpers";
+
 export class Edge {
   constructor(public node1: Node, public node2: Node, public weight: number) {
     this.node1 = node1;
@@ -215,3 +218,19 @@ export function pathfindingAStar(graph: Graph, start: Node, end: Node) {
     });
   }
 }
+
+export const nodeToPoint = (node: Node) => {
+  const regex = /^P(?<x>\d*)-(?<y>\d*)$/;
+
+  const match = regex.exec(node.name);
+
+  if (!(match && match.groups)) return false;
+
+  const { x, y } = match.groups;
+
+  return new Point({
+    id: pointID(x, y),
+    x: parseInt(x),
+    y: parseInt(y),
+  });
+};
