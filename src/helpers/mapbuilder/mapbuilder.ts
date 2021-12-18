@@ -4,8 +4,13 @@ import Line from "./line";
 import { MAP_MODES } from "./consts";
 import EventEmitter from "events";
 import { v4 } from "uuid";
-import { Graph, Node } from "../graph/graph";
-import { connected, intersect, splitIntersection } from "./linesHelpers";
+import { Graph, Node, nodeToPoint, pathfindingAStar } from "../graph/graph";
+import {
+  connected,
+  intersect,
+  linesToGraph,
+  splitIntersection,
+} from "./linesHelpers";
 
 interface MapBuilderEvents {
   mode_change: (mode: MAP_MODES) => void;
@@ -70,30 +75,6 @@ class MapBuilder extends EventEmitter {
       y: 0,
     });
 
-    // const g = new Graph();
-    // g.addNode(new Node(1));
-    // g.addNode(new Node(2));
-    // g.nodes[0].connect(g.nodes[1], 10);
-    //
-    // g.print();
-
-    const g = new Graph();
-    const n1 = new Node("aa");
-    const n2 = new Node("bb");
-    const n3 = new Node("cc");
-
-    g.addNode(n1);
-    g.addNode(n2);
-    g.addNode(n3);
-
-    n1.connect(n2, 10);
-    n1.connect(n3, 20);
-    n2.connect(n3, 15);
-
-    // n1.printEdgesRecursive();
-
-    // console.log(pathfindingAStar(g, n1, n3));
-
     const l1 = new Line({
       id: v4(),
       x1: 0,
@@ -113,13 +94,6 @@ class MapBuilder extends EventEmitter {
     this._lines.push(l1);
     this._lines.push(l2);
 
-    // const sI = splitIntersection(l1, l2);
-    //
-    // if (sI) {
-    //   this._lines = this._lines.filter((l) => l.id !== l1.id && l.id !== l2.id);
-    //   this._lines.push(...sI);
-    // }
-
     const l3 = new Line({
       id: v4(),
       x1: 100,
@@ -127,25 +101,6 @@ class MapBuilder extends EventEmitter {
       x2: 200,
       y2: 100,
     });
-
-    const l4 = new Line({
-      id: v4(),
-      x1: 300,
-      y1: 300,
-      x2: 300,
-      y2: 400,
-    });
-
-    const l5 = new Line({
-      id: v4(),
-      x1: 300,
-      y1: 350,
-      x2: 300,
-      y2: 500,
-    });
-
-    console.log(connected(l4, l5));
-    console.log(intersect(l4, l5));
 
     this._lines.push(l3);
 
@@ -244,6 +199,27 @@ class MapBuilder extends EventEmitter {
     }
 
     this._lines = this._lines.filter((line: Line) => line.length !== 0);
+
+    this._pathGraph = linesToGraph(this._lines);
+
+    const n1: Node = this._pathGraph.nodes.find(
+      (n: Node) => n.name === "P0-0"
+    )!;
+
+    const n2: Node = this._pathGraph.nodes.find(
+      (n: Node) => n.name === "P200-50"
+    )!;
+
+    if (n1 && n2) {
+      const pathNodes = pathfindingAStar(this._pathGraph, n1, n2);
+      if (pathNodes) {
+        console.log(pathNodes[0]);
+
+        if (pathNodes.length) {
+          console.log(nodeToPoint(pathNodes[0]));
+        }
+      }
+    }
   }
 
   private update() {
@@ -305,6 +281,10 @@ class MapBuilder extends EventEmitter {
       this._lines.find((l) => l.selected) ||
       false
     );
+  }
+
+  get pathGraph(): Graph {
+    return this._pathGraph;
   }
 
   set mouseX(x: number) {
