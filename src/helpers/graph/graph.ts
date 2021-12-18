@@ -111,63 +111,6 @@ export class Graph {
   }
 }
 
-// create pathfinding function using Node and Edge class
-export function pathfinding(graph: Graph, start: Node, end: Node) {
-  const startNode = graph.getNodes().find((node) => node.name === start.name)!;
-  const endNode = graph.getNodes().find((node) => node.name === end.name);
-
-  // create a queue to store nodes
-  const queue: Node[] = [];
-
-  // add start node to queue
-  queue.push(startNode);
-
-  // create a set to store visited nodes
-  const visited: Set<Node> = new Set();
-
-  // create a set to store nodes in the queue
-  const inQueue: Set<Node> = new Set();
-
-  // create a set to store nodes in the path
-  const path: Set<Node> = new Set();
-
-  // while queue is not empty
-  while (queue.length > 0) {
-    // get the first node in the queue
-    const currentNode = queue.shift()!;
-
-    // if current node is the end node, return the path
-    if (currentNode === endNode) {
-      path.add(currentNode);
-      return path;
-    }
-
-    // add current node to visited set
-    visited.add(currentNode);
-
-    // add current node to path set
-    path.add(currentNode);
-
-    // get all edges of current node
-    const edges = currentNode.edges;
-
-    // for each edge
-    edges.forEach((edge) => {
-      // if edge is not in visited set
-      if (!visited.has(edge.node2)) {
-        // add edge.node2 to queue
-        queue.push(edge.node2);
-      }
-    });
-
-    // add current node to in queue set
-    inQueue.add(currentNode);
-  }
-
-  // if end node is not in visited set, return empty set
-  return new Set();
-}
-
 // create a heuristic function to calculate the distance between two nodes using weights
 export function heuristic(node1: Node, node2: Node) {
   return node1.edges.find((edge) => edge.node2.name === node2.name)?.weight!;
